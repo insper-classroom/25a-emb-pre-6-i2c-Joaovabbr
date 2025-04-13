@@ -23,7 +23,12 @@ void i2c_task(void *p) {
 
     // TODO
     // read id chip BMP280
-    //printf("BMP280 ID: 0x%X \n", buffer[0]);
+    uint8_t reg_address = 0xD0; // BMP280 ID register
+    uint8_t default_address = 0x76; // BMP280 default I2C address
+    uint8_t buffer[1];
+    i2c_write_blocking(i2c_default, default_address, &reg_address, 1, true);
+    i2c_read_blocking(i2c_default, default_address, buffer, 1, false);
+    printf("BMP280 ID: 0x%X \n", buffer[0]);
 
     while (1) {
         vTaskDelay(pdMS_TO_TICKS(200));
